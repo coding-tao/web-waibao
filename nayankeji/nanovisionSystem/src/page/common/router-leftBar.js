@@ -1,61 +1,49 @@
 export default {
   routerList: [{
       path: '/',
-      name: '会员管理',
+      name: '网页管理',
       icon:'el-icon-document',
       itemList: [{
-        name: '会员列表',
+        name: '广告栏',
         path: '/'
       },{
-        name: '吉分流水',
-        path: '/integralList'
+        name: '公司信息',
+        path: '/companyInfo'
       }]
     },{
       path: '/1',
-      name: '吉分商城管理',
+      name: '产品管理',
       icon:'el-icon-document',
       itemList: [{
-        name: '兑换管理',
-        path: '/exchangeList'
+        name: '产品列表',
+        path: '/productList'
       },{
-        name: '商品列表',
-        path: '/goodsList'
+        name: '分类列表',
+        path: '/sortList'
       }]
     },{
       path: '/2',
-      name: '抽奖管理',
+      name: '招聘管理',
       icon:'el-icon-document',
       itemList: [{
-        name: '抽奖管理',
-        path: '/lotteryList'
-      },{
-        name: '奖品管理',
-        path: '/prizeList'
+        name: '职位列表',
+        path: '/recruitList'
       }]
     },{
       path: '/3',
-      name: '活动管理',
+      name: '咨询管理',
       icon:'el-icon-document',
       itemList: [{
-        name: '活动管理',
-        path: '/activityList'
+        name: '资讯列表',
+        path: '/infoList'
       }]
     },{
       path: '/4',
-      name: '平台管理',
+      name: '留言管理',
       icon:'el-icon-document',
       itemList: [{
-        name: '信息管理',
-        path: '/infoManage'
-      },{
-        name: '意见反馈',
-        path: '/opinionList'
-      },{
-        name: '轮播广告',
-        path: '/bannerList'
-      },{
-        name: '排行榜海报',
-        path: '/poster'
+        name: '留言列表',
+        path: '/messageList'
       }]
     }
   ]

@@ -1,6 +1,6 @@
 <template>
     <header>
-        <el-col :span="21" :push="3">GlocalMe吉客猫后台</el-col>
+        <el-col :span="21" :push="3">纳研官网后台管理系统</el-col>
         <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
                 <img alt="Avatar" src="../../images/avatar2.jpg">

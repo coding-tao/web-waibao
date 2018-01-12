@@ -1,15 +1,15 @@
 <template>
     <div class="container">
         <div class="header">
-           <p>新增/编辑活动</p>
+           <p>新增/编辑资讯</p>
        </div>
        <div class="main">
             <div class="title">
-                <span><i>*</i>活动标题：</span>
+                <span><i>*</i>资讯标题：</span>
                 <el-input v-model="title" placeholder="请输入内容" class="input-text" :maxlength='40'></el-input>
             </div>
             <div class="cover">
-                <span><i>*</i>封面：</span>
+                <span><i>*</i>资讯封面：</span>
                 <el-upload class="avatar-uploader" 
                     :action="upLoadUrl"   
                     :show-file-list="false"   
@@ -20,13 +20,13 @@
                 </el-upload>
             </div>
             <div class="content-edit">
-                <p class="edit-title">*活动详情:</p>
+                <p class="edit-title">*内容:</p>
                 <div id="summernote"></div>
             </div>
             <div class="btns">
                 <el-button size="small" type="primary" @click="handleSave">确定</el-button>
                 <el-button size="mini"  class="link" type="info">
-                    <router-link to="/activityList" style="color: #fff;">返回</router-link>
+                    <router-link to="/infoList" style="color: #fff;">返回</router-link>
                 </el-button>
             </div>
         </div>

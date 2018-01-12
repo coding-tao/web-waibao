@@ -1,7 +1,7 @@
 <template>
     <div class="ad_editor">
         <div class="words_header">
-            <span class="txt">轮播广告</span>
+            <span class="txt">广告栏</span>
             <el-button type="primary" @click="handleBack">返回</el-button>
             <div class="clear"></div>
         </div>
@@ -32,14 +32,14 @@
                             </el-button>
                       </template>
                   </el-table-column>
-                  <el-table-column
+                  <!-- <el-table-column
                     label="URL地址"
                     align="center"
                   >
                     <template slot-scope="scope">
                         <el-input v-model="tableData[scope.$index].url" placeholder="请输入URL地址"></el-input>
                     </template>
-                  </el-table-column>
+                  </el-table-column> -->
                   <el-table-column
                     prop=""
                     label="操作"

@@ -1,103 +1,28 @@
 <template>
     <div class="label-wrap level-list">
         <div class="words_list_header">
-            <span>
-                <form :action="url" method="post" >
-                    <button class="export" type="submit" >导出会员信息</button>
-                    <input type="hidden" name="ids" :value="multipleSelection" />
-                </form>
-            </span>
+            <el-button class="link" type="primary">
+                <router-link :to="{ name: 'productEdit', params: {}}">新增</router-link>
+            </el-button>
         </div>
-        <el-row class="wrap-search">
-            <div class="search-item">
-                <div class="search-title">昵称:</div>
-                <el-input style="width: 200px;" class=""   @keyup.enter.native="search"
-                placeholder="请输入昵称"
-                v-model="nicknameLike" ></el-input>
-            </div>
-            <div class="search-item">
-                <div class="search-title">姓名</div>
-                <el-input style="width: 200px;" class=""   @keyup.enter.native="search"
-                placeholder="请输入姓名"
-                v-model="trueNameLike" ></el-input>
-            </div>
-            <div class="search-item">
-                <div class="search-title">手机号:</div>
-                <el-input style="width: 200px;" class=""   @keyup.enter.native="search"
-                placeholder="请输入手机号"
-                v-model="mobileLike" ></el-input>
-            </div>
-
-            <el-button  class="search-btn" type="primary" @click="getUserList(1)">查询</el-button>
-        </el-row>
         <el-table
             :data="tableData"
             v-loading="loading"
-            @selection-change="handleSelectionChange" 
             border
-            @sort-change="sort"
             style="width: 100%"
             >
-            <el-table-column  fixed="left" type="selection"  min-width='100' align="center">   
-            </el-table-column>
             <el-table-column
-            label="昵称" min-width='100' align="center">
+            label="位置" min-width='100' align="center" >
             <template slot-scope="scope">
-                <span>{{ scope.row.nickname?scope.row.nickname:'--' }}</span>
+                <span v-if="scope.row.giftName != '谢谢参与'">{{ scope.row.giftType | formatGoodType}}</span>
+                <span v-else>--</span>
             </template>
             </el-table-column>
             <el-table-column
-            label="姓名"  min-width='100' align="center">
+            label="广告名称" min-width='100' align="center" >
             <template slot-scope="scope">
-              <span>{{ scope.row.trueName?scope.row.trueName:'--' }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="头像"  min-width='100' align="center">
-            <template slot-scope="scope">
-                <span><img class="avatar" :src="scope.row.imageUrl" alt=""></span>
-            </template>
-             </el-table-column>
-            <el-table-column
-            label="性别"  min-width='100' align="center">
-            <template slot-scope="scope">
-                <span>{{ scope.row.sex?sexArr[scope.row.sex]:'--' }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="手机号"  min-width='100' align="center">
-            <template slot-scope="scope">
-                <span>{{ scope.row.mobile?scope.row.mobile:'--' }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="生日"  min-width='100' align="center">
-            <template slot-scope="scope">
-                <span>{{scope.row.birthday?formDate(scope.row.birthday):'--' }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="所在地" align="center" min-width='100'>
-            <template slot-scope="scope">
-                <span>{{ scope.row.province?scope.row.province:'--' }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="详细地址"  min-width='100' align="center">
-            <template slot-scope="scope">
-                <span >{{ scope.row.addressSend?scope.row.addressSend:'--' }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="吉分"  sortable='custom' min-width='100' align="center"  >
-            <template slot-scope="scope">
-                <span>{{ scope.row.points?scope.row.points:0 }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="绑定吉客猫账号" min-width='120' align="center">
-            <template slot-scope="scope">
-                <span>{{ scope.row.glocalmeUserName?scope.row.glocalmeUserName:'--' }}</span>
+                <span v-if="scope.row.giftName != '谢谢参与'">{{ scope.row.exchangeLimit?scope.row.exchangeLimit:'--' }}</span>
+                <span v-else>--</span>
             </template>
             </el-table-column>
             <el-table-column
@@ -110,7 +35,12 @@
                     <el-button
                         type="primary"
                         size="small"  class="btn-wrap"
-                        @click="modalShow(scope.row)">增减吉分</el-button>
+                        @click="modalShow(scope.row)">编辑</el-button>
+                         <el-button
+                        type="primary"
+                        size="small"  class="btn-wrap"
+                        @click="modalShow(scope.row)">编辑banner</el-button>
+                         <el-button @click="handleDelete(tableData[scope.$index].id)" type="text" size="small" style="background: red;color: #fff;padding: 7px 14px;">删除</el-button>  
                 </template>
             </el-table-column>
         </el-table>
@@ -201,6 +131,36 @@ export default {
             })
             this.multipleSelection = Ids.length?JSON.stringify(Ids):[];
            
+        },
+        handleDelete(id){
+            this.$confirm('确定删除?', '提示', {           
+                confirmButtonText: '确定',           
+                cancelButtonText: '取消',           
+                type: 'warning'         
+            }).then(() => {           
+                let  url = CONSTANT.URL.GOOD.DELETEGOODS,
+                    param = {id:id}
+                common.requestAjax(url,param,(res)=>{
+                    if(res.status == 200){
+                        this.$message({
+                            type: 'success',
+                            message:res.msg
+                        });
+                        this.getGoodList(1);
+                    }else{
+                        this.$message({           
+                            message: res.msg,           
+                            type: 'warning'         
+                        });
+                    }
+                }) 
+   
+            }).catch(() => {           
+                this.$message({             
+                    type: 'info',             
+                    message: '已取消删除'           
+                });                   
+            });    
         },
         getUserList(pageIndex){
             this.pageIndex = pageIndex;

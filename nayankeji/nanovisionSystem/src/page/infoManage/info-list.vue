@@ -2,7 +2,7 @@
     <div class="label-wrap">
         <div class="words_list_header">
             <el-button v-if="listLength<8" class="link" type="primary">
-                <router-link :to="{ name: 'prizeEdit'}">新增奖品</router-link>
+                <router-link :to="{ name: 'infoEdit'}">新增</router-link>
             </el-button>
         </div>
         <el-table
@@ -11,42 +11,22 @@
             :data="tableData"
             >
             <el-table-column
-            label="奖品名称" min-width='100' align="center" >
+            label="咨询标题" min-width='100' align="center" >
             <template slot-scope="scope">
                 <span>{{ scope.row.giftName?scope.row.giftName:'--' }}</span>
             </template>
             </el-table-column>
             <el-table-column
             prop="coverImg"
-            label="奖品图片" min-width='100' align="center">
+            label="封面" min-width='100' align="center">
                 <template slot-scope="scope">
                     <img  v-if="scope.row.imageUrl" :src="scope.row.imageUrl" alt="">
                 </template>
             </el-table-column>
             <el-table-column
-            label="奖品类型" min-width='100' align="center" >
+            label="发布时间" min-width='100' align="center" >
             <template slot-scope="scope">
                 <span v-if="scope.row.giftName != '谢谢参与'">{{ scope.row.giftType | formatGoodType}}</span>
-                <span v-else>--</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="奖品总数(件)" min-width='100' align="center" >
-            <template slot-scope="scope">
-                <span v-if="scope.row.giftName != '谢谢参与'">{{ scope.row.exchangeLimit?scope.row.exchangeLimit:'--' }}</span>
-                <span v-else>--</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="中奖概率(%)" min-width='100' align="center" >
-            <template slot-scope="scope">
-                <span>{{ scope.row.percentage?scope.row.percentage:0 }}</span>
-            </template>
-            </el-table-column>
-            <el-table-column
-            label="剩余数(件)" min-width='100' align="center" >
-            <template slot-scope="scope">
-                <span  v-if="scope.row.giftName != '谢谢参与'">{{ scope.row.exchangeLimit!='--'?scope.row.exchangeLimit-scope.row.haveExchangeCount:'--' }}</span>
                 <span v-else>--</span>
             </template>
             </el-table-column>
@@ -55,9 +35,7 @@
                    <el-button v-if="scope.$index<=listLength-1"  class="link" type="text" size="small" style="background: #4db3ff;color: #fff;">
                      <router-link :to="{ path: 'prizeEdit', query: {id: tableData[scope.$index].id} }" style="color: #fff;padding: 7px 14px;">编辑</router-link>
                    </el-button>
-                   <el-button  v-if="scope.$index<=listLength-1&&scope.row.giftName != '谢谢参与'"  @click="handleDelete(tableData[scope.$index].id)" type="text" size="small" style="background: red;color: #fff;padding: 7px 14px;">删除</el-button>    
-                    <el-button v-if="scope.$index!=0&&scope.$index<=listLength-1"  size="mini"  type="success" @click="pre(tableData[scope.$index].id,1)"><i class="el-icon-arrow-up"></i></el-button>
-                    <el-button v-if="scope.$index<listLength-1"  size="mini"  type="success" @click="pre(tableData[scope.$index].id,2)"><i class="el-icon-arrow-down"></i></el-button>                
+                   <el-button  v-if="scope.$index<=listLength-1&&scope.row.giftName != '谢谢参与'"  @click="handleDelete(tableData[scope.$index].id)" type="text" size="small" style="background: red;color: #fff;padding: 7px 14px;">删除</el-button>          
                 </template>
             </el-table-column>
         </el-table>

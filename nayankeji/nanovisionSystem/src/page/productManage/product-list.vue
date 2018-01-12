@@ -1,8 +1,12 @@
 <template>
     <div class="label-wrap">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="中文版" name="chinese"></el-tab-pane>
+            <el-tab-pane label="英文版" name="english"></el-tab-pane>
+        </el-tabs>
         <div class="words_list_header">
             <el-button class="link" type="primary">
-                <router-link :to="{ name: 'activityEdit', params: {}}">新增活动</router-link>
+                <router-link :to="{ name: 'productEdit', params: {}}">新增</router-link>
             </el-button>
         </div>
         <el-table
@@ -10,13 +14,13 @@
             border
             >
             <el-table-column
-            label="活动名称" min-width='100' align="center" >
+            label="产品名称" min-width='100' align="center" >
             <template slot-scope="scope">
                 <span style="margin-left: 10px">{{ scope.row.title?scope.row.title:'--' }}</span>
             </template>
             </el-table-column>
             <el-table-column
-            label="创建时间" min-width='100' align="center" >
+            label="所属分类" min-width='100' align="center" >
             <template slot-scope="scope">
                 <span>{{ scope.row.gmtCreated?formDate(scope.row.gmtCreated):'--' }}</span>
             </template>
@@ -24,7 +28,7 @@
             <el-table-column label="操作" align="center" fixed="right">
                 <template slot-scope="scope">
                    <el-button  class="link" type="text"  style="background: #4db3ff;color: #fff;">
-                     <router-link :to="{ path: 'activityEdit', query: {id: tableData[scope.$index].id} }" style="color: #fff;padding: 7px 9px;">编辑</router-link>
+                     <router-link :to="{ path: 'productEdit', query: {id: tableData[scope.$index].id} }" style="color: #fff;padding: 7px 9px;">编辑</router-link>
                    </el-button>
                    <el-button @click="handleDelete(scope.row.id)" type="text"  style="background: red;color: #fff;padding: 7px 9px;">删除</el-button>          
                 </template>
@@ -63,7 +67,8 @@ export default {
                 value: '未认证',
                 label: 'n'
             }],
-            value:''
+            value:'',
+            activeName:'chinese'
         }
     },
     mounted(){

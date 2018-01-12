@@ -1,54 +1,44 @@
 <template>
     <div class="container">
-        <div class="header">
-           <p>新增/编辑奖品信息</p>
-           <el-button  class="link" type="info">
-                <router-link to="/prizeList" style="color: #fff;">返回</router-link>
-           </el-button>
-       </div>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="中文版" name="chinese"></el-tab-pane>
+            <el-tab-pane label="英文版" name="english"></el-tab-pane>
+        </el-tabs>
        <div class="main">
             <div class="title">
-                <span><i>*</i>奖品名称：</span>
-                <el-input v-if="!this.id" v-model="giftName" placeholder="请输入内容" class="input-text" :maxlength='20'></el-input>
-                <span v-if="this.id">{{giftName}}</span>
-            </div>
-            <div class="cover">
-                <span><i>*</i>奖品图片：</span>
-                <el-upload class="avatar-uploader" 
-                    :action="upLoadUrl"   
-                    :show-file-list="false"   
-                    :on-success="handleAvatarSuccess"   
-                    >   
-                    <img v-if="imgUrl" :src="imgUrl" class="avatar">   
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i> 
-                </el-upload>
-                <!-- <div class="" style="margin-left: 10%;margin-top: 10px;color: red;">图片建议尺寸：230像素 * 190像素</div> -->
-            </div>
-            
-            <div class="title" v-if="giftName != '谢谢参与'">
-                <span><i>*</i>奖品类型：</span>
-                <el-select  filterable  placeholder='-请选择-'  v-model="giftTypeName"   @change="getGiftType">
-                    <el-option   v-for="item in giftList"   :key="item.value"   :label="item.label"  :value="item.value"></el-option>
-                </el-select>
-            </div>
-            <div class="title" v-if="giftName != '谢谢参与'">
-                <span><i>*</i>奖品数量：</span>
-                <el-input v-model="exchangeLimit" placeholder="请输入奖品数量" class="input-text" @change="typeLimit" :maxlength='6'></el-input>
+                <span>公司地址：</span>
+                <el-input v-model="giftName" placeholder="请输入内容" class="input-text"></el-input>
+            </div>        
+            <div class="title">
+                <span>联系电话：</span>
+                <el-input v-model="giftName" placeholder="请输入联系电话" class="input-text"></el-input>
             </div>
             <div class="title">
-                <span><i>*</i>中奖概率(%)：</span>
-                <span v-if="giftName == '谢谢参与'">{{percentage}}</span>
-                <el-input v-if="giftName != '谢谢参与'" v-model="percentage" placeholder="请输入中奖概率" class="input-text" @change="typeLimit" :maxlength='8'></el-input>
+                <span>传真：</span>
+                <el-input v-model="giftName" placeholder="请输入传真" class="input-text"></el-input>
             </div>
-            <div class="title" v-if="giftType == '1000007'">
-                <span><i>*</i>吉分数：</span>
-                <el-input  v-model="point" placeholder="请输入吉分数" class="input-text" @change="typeLimit" :maxlength='6'></el-input>
+            <div class="title">
+                <span>邮编：</span>
+                <el-input v-model="giftName" placeholder="请输入邮编" class="input-text"></el-input>
             </div>
+            <div class="title">
+                <span>产品销售：</span>
+                <el-input v-model="giftName" placeholder="请输入产品销售" class="input-text"></el-input>
+            </div>
+            <div class="title">
+                <span>技术支持：</span>
+                <el-input v-model="giftName" placeholder="请输入技术支持" class="input-text"></el-input>
+            </div>
+            <div class="title">
+                <span>合作邮箱：</span>
+                <el-input v-model="giftName" placeholder="请输入合作邮箱" class="input-text"></el-input>
+            </div>
+            <div class="title">
+                <span>招聘邮箱：</span>
+                <el-input v-model="giftName" placeholder="请输入招聘邮箱" class="input-text"></el-input>
+            </div>            
             <div class="btns">
-                <el-button type="primary"  @click="handleSave">确定</el-button>
-                <el-button  class="link" type="info">
-                    <router-link to="/prizeList" style="color: #fff;padding:12px 20px;">返回</router-link>
-                </el-button>
+                <el-button type="primary"  @click="handleSave">保存</el-button>
             </div>
         </div>
        
@@ -62,29 +52,17 @@ let common = require("../../common.js");
 export default {
     data() {
         return {
-            upLoadUrl:'',
-            id:'',
             giftName:'',
             percentage:'',
             exchangeLimit:'',
             giftType:'',
             giftTypeName:'',
             giftTypeCode:0,
-            giftList:[
-                {value:'1000005',label:'实物奖品'},
-                {value:'1000006',label:'虚拟奖品'},
-                {value:'1000007',label:'吉分'}
-            ],
-            imgUrl:'',
-            fileUrl:'',
-            point:''
+            point:'',
+            activeName:'chinese'
         }
     },
     mounted() {
-        this.id = this.$router.currentRoute.query.id;
-       // console.log(this.id);
-        let sessionId = common.getCookie('sessionId');
-        this.upLoadUrl = 'https://glocalme.icebartech.com/api/admin/sys/uploadFile?sessionId='+sessionId;
         this.getGiftById();
     },
     methods: {
@@ -113,17 +91,6 @@ export default {
                         this.point = data.point;
                     }
                 })
-            }
-        },
-        getGiftType(val){
-            this.giftType = val;      
-        },
-        handleAvatarSuccess(res, file) {
-            this.imgUrl = URL.createObjectURL(file.raw);
-            console.log(res);
-            if(res.status == 200){
-                let data = res.data.bussData;
-                this.fileUrl = data.fileUrl;
             }
         },
         handleSave(){
@@ -173,62 +140,6 @@ export default {
                 }
             })
         },
-        typeLimit:function(e){
-            if(isNaN(e)){
-                this.$message({           
-                    message: '输入类型只能为数字哦~~',           
-                    type: 'warning'         
-                });
-            }
-        },
-        paraLimit(value,index){
-            let tips = [
-                '奖品名称不能为空!',
-                '请上传奖品图片!',
-                '请选择奖品类型!',
-                '奖品数量不能为空!',
-                '中奖概率不能为空!',
-                '吉分数不能为空!'
-            ];
-            
-            if(value == ''){
-                this.$message({
-                    type: 'warning',
-                    message: tips[index]
-                }); 
-                return false;
-            }
-            else{
-                if(index == 3){
-                    if(isNaN(value)){
-                        this.$message({           
-                            message: '奖品只能是数字类型哦~~',           
-                            type: 'warning'         
-                        });
-                        return false;
-                    }
-                    else{
-                        return true;
-                    }
-                }
-                else if(index == 4){
-                    if(isNaN(value)){
-                        this.$message({           
-                            message: '中奖概率只能是数字类型哦~~',           
-                            type: 'warning'         
-                        });
-                        return false;
-                    }
-                    else{
-                        return true;
-                    }
-                }
-                else{
-                    return true;
-                }
-            }
-        }
-        
     },
     
 }
